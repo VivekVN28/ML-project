@@ -30,7 +30,26 @@ class ModelTrainer:
                 "AdaBoost":AdaBoostClassifier(),
                 "Linear Regression":LinearRegression()
             }
-            model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,models=models)
+            params={
+                "Decision Tree":{
+                    'criterion':['gini','entropy','log_loss'],
+                },
+                "Random Forest":{
+                    'n_estimators':[8,16,32,64,128,256]
+                },
+                "KNeighbors":{
+                    'n_neighbors':[5,7,9,11],
+                },
+                "XGBRegressor":{
+                    'learning_rate':[.1,.01,.05,.001],
+                    'n_estimators':[8,16,32,64,128,256]
+                },
+                "AdaBoost":{
+                    'n_estimators':[8,16,32,64,128,256]
+                },
+                "Linear Regression":{}
+            }
+            model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,models=models,params=params)
             best_model_score=max(sorted(model_report.values()))
             best_model_name=list(model_report.keys())[list(model_report.values()).index(best_model_score)]
             best_model=models[best_model_name]
